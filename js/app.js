@@ -36,3 +36,34 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+// display the card's symbol
+function showCardSymbol() {
+
+}
+
+// add the card to a *list* of "open" cards
+function addCardToOpenList() {
+
+}
+
+// if the cards do match, lock the cards in the open position 
+function keepCardsOpen() {
+
+}
+
+// if the cards do not match, remove the cards from the list and hide the card's symbol
+function closeCardsAndHideSymbol() {
+
+}
+
+// increment the move counter and display it on the page
+function incrementAndShowMoveCounter() {
+
+}
+
+// if all cards have matched, display a message with the final score
+function showFinalScore() {
+
+}
+
