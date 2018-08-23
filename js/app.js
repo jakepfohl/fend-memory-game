@@ -9,6 +9,16 @@ let cardList = [...document.querySelectorAll(".card")];
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+function init(cardList) {
+    let deck = document.querySelector(".deck");
+    let shuffledDeck = shuffle(cardList);
+    while (deck.firstChild) {
+        deck.removeChild(deck.firstChild);
+    }
+    shuffledDeck.forEach(function(card) {
+        deck.appendChild(card);
+    });
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -37,14 +47,23 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-// display the card's symbol
-function showCardSymbol() {
+init(cardList);
 
+cardList.forEach(function(card) {
+    card.addEventListener("click", function() {
+        showCardSymbol(this);
+
+    });
+});
+
+// display the card's symbol
+function showCardSymbol(card) {
+    card.classList.toggle("show");
+    card.classList.toggle("open");
 }
 
 // add the card to a *list* of "open" cards
 function addCardToOpenList() {
-
 }
 
 // if the cards do match, lock the cards in the open position 
