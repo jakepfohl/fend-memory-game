@@ -55,13 +55,21 @@ cardList.forEach(function(card) {
         if (!card.classList.contains("open")) {
             showCardSymbol(this);
             addCardToOpenList(this);
+            console.log("openCards.length =" + openCards.length);
+            console.log(openCards);
+            if (openCards.length > 1) {
+                console.log(openCards[0].firstElementChild.className);
+                console.log(card.firstElementChild.className);
+                console.log(openCards[0].firstElementChild.className === card.firstElementChild.className);
+                if (openCards[0].firstElementChild.className === card.firstElementChild.className) {
+                    console.log("It's a match!");
+                    keepCardsOpen();
+                }
+                else {
+                    closeCardsAndHideSymbol();
+                }
+            }
         }
-        else {
-            card.classList.remove("show");
-            card.classList.remove("open");
-            openCards.pop(card);
-        }
-        console.log(openCards);
     });
 });
 
@@ -78,12 +86,21 @@ function addCardToOpenList(card) {
 
 // if the cards do match, lock the cards in the open position 
 function keepCardsOpen() {
-
+    openCards.forEach(function(card) {
+        card.classList.remove("show");
+        card.classList.remove("open");
+        card.classList.add("match");
+    });
+    openCards.length = 0;
 }
 
 // if the cards do not match, remove the cards from the list and hide the card's symbol
 function closeCardsAndHideSymbol() {
-
+    openCards.forEach(function(card) {
+        card.classList.remove("show");
+        card.classList.remove("open");
+    });
+    openCards.length = 0;
 }
 
 // increment the move counter and display it on the page
