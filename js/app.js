@@ -54,7 +54,7 @@ init(cardList);
 
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
-        if (!card.classList.contains("open")) {
+        if (!card.classList.contains("open") && !card.classList.contains("match")) {
             showCardSymbol(this);
             addCardToOpenList(this);
             console.log("openCards.length =" + openCards.length);
