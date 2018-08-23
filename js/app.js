@@ -55,7 +55,7 @@ init(cardList);
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
         if (!card.classList.contains("open") && !card.classList.contains("match")) {
-            showCardSymbol(this);
+            toggleCard(this);
             addCardToOpenList(this);
             console.log("openCards.length =" + openCards.length);
             console.log(openCards);
@@ -73,9 +73,9 @@ cardList.forEach(function(card) {
 });
 
 // display the card's symbol
-function showCardSymbol(card) {
-    card.classList.add("show");
-    card.classList.add("open");
+function toggleCard(card) {
+    card.classList.toggle("show");
+    card.classList.toggle("open");
 }
 
 // add the card to a *list* of "open" cards
@@ -100,12 +100,12 @@ function keepCardsOpen() {
 
 // if the cards do not match, remove the cards from the list and hide the card's symbol
 function closeCardsAndHideSymbol() {
-    openCards.forEach(function(card) {
-        card.classList.remove("show");
-        card.classList.remove("open");
-    });
-    openCards.length = 0;
     incrementAndShowMoveCounter();
+    setTimeout(function() {
+        toggleCard(openCards[0]);
+        toggleCard(openCards[1]);
+        openCards.length = 0;
+    }, 1000);
 }
 
 // increment the move counter and display it on the page
