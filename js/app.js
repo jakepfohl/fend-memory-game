@@ -59,11 +59,8 @@ cardList.forEach(function(card) {
             addCardToOpenList(this);
             console.log("openCards.length =" + openCards.length);
             console.log(openCards);
-            if (openCards.length > 1) {
-                console.log(openCards[0].firstElementChild.className);
-                console.log(card.firstElementChild.className);
-                console.log(openCards[0].firstElementChild.className === card.firstElementChild.className);
-                if (openCards[0].firstElementChild.className === card.firstElementChild.className) {
+            if (openCards.length === 2) {
+                if (cardsMatch()) {
                     console.log("It's a match!");
                     keepCardsOpen();
                 }
@@ -84,6 +81,10 @@ function showCardSymbol(card) {
 // add the card to a *list* of "open" cards
 function addCardToOpenList(card) {
     openCards.push(card);
+}
+
+function cardsMatch() {
+    return(openCards[0].firstElementChild.className === openCards[1].firstElementChild.className);
 }
 
 // if the cards do match, lock the cards in the open position 
