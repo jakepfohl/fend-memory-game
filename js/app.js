@@ -2,6 +2,7 @@
  * Create a list that holds all of your cards
  */
 let cardList = [...document.querySelectorAll(".card")];
+let openCards = [];
 
 /*
  * Display the cards on the page
@@ -51,19 +52,28 @@ init(cardList);
 
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
-        showCardSymbol(this);
-
+        if (!card.classList.contains("open")) {
+            showCardSymbol(this);
+            addCardToOpenList(this);
+        }
+        else {
+            card.classList.remove("show");
+            card.classList.remove("open");
+            openCards.pop(card);
+        }
+        console.log(openCards);
     });
 });
 
 // display the card's symbol
 function showCardSymbol(card) {
-    card.classList.toggle("show");
-    card.classList.toggle("open");
+    card.classList.add("show");
+    card.classList.add("open");
 }
 
 // add the card to a *list* of "open" cards
-function addCardToOpenList() {
+function addCardToOpenList(card) {
+    openCards.push(card);
 }
 
 // if the cards do match, lock the cards in the open position 
