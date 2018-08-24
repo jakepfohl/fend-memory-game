@@ -3,6 +3,7 @@
  */
 let cardList = [...document.querySelectorAll(".card")];
 let openCards = [];
+let matchedCards = [];
 let moveCounter = 0;
 let timerCount = 0;
 
@@ -15,6 +16,7 @@ let timerCount = 0;
 function init(cardList) {
     moveCounter = 0;
     openCards.length = 0;
+    matchedCards.length = 0;
     timerCount = 0;
     let deck = document.querySelector(".deck");
     let shuffledDeck = shuffle(cardList);
@@ -96,9 +98,13 @@ function keepCardsOpen() {
         card.classList.remove("show");
         card.classList.remove("open");
         card.classList.add("match");
+        matchedCards.push(card);
     });
     openCards.length = 0;
     incrementAndShowMoveCounter();
+    if (matchedCards.length === 16) {
+        showFinalScore();
+    }
 }
 
 // if the cards do not match, remove the cards from the list and hide the card's symbol
@@ -119,6 +125,6 @@ function incrementAndShowMoveCounter() {
 
 // if all cards have matched, display a message with the final score
 function showFinalScore() {
-    
+    console.log("Game over!");
 }
 
