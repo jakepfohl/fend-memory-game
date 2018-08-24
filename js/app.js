@@ -13,6 +13,7 @@ let moveCounter = 0;
  */
 function init(cardList) {
     moveCounter = 0;
+    openCards.length = 0;
     let deck = document.querySelector(".deck");
     let shuffledDeck = shuffle(cardList);
     while (deck.firstChild) {
