@@ -110,9 +110,13 @@ function keepCardsOpen() {
 // if the cards do not match, remove the cards from the list and hide the card's symbol
 function closeCardsAndHideSymbol() {
     incrementAndShowMoveCounter();
+    openCards[0].classList.add("nomatch");
+    openCards[1].classList.add("nomatch");
     setTimeout(function() {
         toggleCard(openCards[0]);
         toggleCard(openCards[1]);
+        openCards[0].classList.remove("nomatch");
+        openCards[1].classList.remove("nomatch");
         openCards.length = 0;
     }, 1000);
 }
