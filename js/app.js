@@ -59,7 +59,7 @@ init(cardList);
 
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
-        if (!card.classList.contains("open") && !card.classList.contains("match")) {
+        if (isClickValid(this)) {
             toggleCard(this);
             addCardToOpenList(this);
             console.log("openCards.length =" + openCards.length);
@@ -76,6 +76,14 @@ cardList.forEach(function(card) {
         }
     });
 });
+
+// determine if a click on a card is valid or not 
+function isClickValid(card) {
+    return(!card.classList.contains("open") 
+    && !card.classList.contains("show") 
+    && !card.classList.contains("match") 
+    && openCards.length <= 1);
+}
 
 // display the card's symbol
 function toggleCard(card) {
