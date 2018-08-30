@@ -136,6 +136,17 @@ function closeCardsAndHideSymbol() {
 function incrementAndShowMoveCounter() {
     moveCounter++;
     document.querySelector(".moves").textContent = moveCounter;
+    checkAndUpdateStars();
+}
+
+function checkAndUpdateStars() {
+    const stars = document.querySelector(".stars");
+    if(moveCounter >= 15 && moveCounter <= 24 && stars.children.length > 2) {
+        stars.removeChild(stars.lastChild);
+    }
+    else if(moveCounter > 24 && stars.children.length > 1) {
+        stars.removeChild(stars.lastChild);
+    }
 }
 
 // if all cards have matched, display a message with the final score
