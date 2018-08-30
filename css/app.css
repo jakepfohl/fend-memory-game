@@ -86,6 +86,10 @@ h1 {
     background: #ff1934;
 }
 
+.hidden {
+    display: none;
+}
+
 /*
  * Styles for the Score Panel
  */

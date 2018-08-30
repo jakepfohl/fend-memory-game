@@ -68,6 +68,8 @@ cardList.forEach(function(card) {
             console.log("openCards.length =" + openCards.length);
             console.log(openCards);
             if (openCards.length === 2) {
+                incrementAndShowMoveCounter();
+                checkMoves();
                 if (cardsMatch()) {
                     console.log("It's a match!");
                     keepCardsOpen();
@@ -112,7 +114,6 @@ function keepCardsOpen() {
         matchedCards.push(card);
     });
     openCards.length = 0;
-    incrementAndShowMoveCounter();
     if (matchedCards.length === 16) {
         showFinalScore();
     }
@@ -120,7 +121,6 @@ function keepCardsOpen() {
 
 // if the cards do not match, remove the cards from the list and hide the card's symbol
 function closeCardsAndHideSymbol() {
-    incrementAndShowMoveCounter();
     openCards[0].classList.add("nomatch");
     openCards[1].classList.add("nomatch");
     setTimeout(function() {
@@ -136,16 +136,21 @@ function closeCardsAndHideSymbol() {
 function incrementAndShowMoveCounter() {
     moveCounter++;
     document.querySelector(".moves").textContent = moveCounter;
-    checkAndUpdateStars();
 }
 
-function checkAndUpdateStars() {
-    const stars = document.querySelector(".stars");
-    if(moveCounter >= 15 && moveCounter <= 24 && stars.children.length > 2) {
-        stars.removeChild(stars.lastChild);
+function checkMoves() {
+    if (moveCounter === 15 || moveCounter === 22) {
+        removeStar();
     }
-    else if(moveCounter > 24 && stars.children.length > 1) {
-        stars.removeChild(stars.lastChild);
+}
+
+function removeStar() {
+    const stars = document.querySelectorAll(".stars li");
+    for (star of stars) {
+        if (!star.firstElementChild.classList.contains("hidden")) {
+            star.firstElementChild.classList.add("hidden");
+            break;
+        }
     }
 }
 
