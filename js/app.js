@@ -138,17 +138,23 @@ function incrementAndShowMoveCounter() {
     document.querySelector(".moves").textContent = moveCounter;
 }
 
+// check if the user is on move 15 or 22. If so, call removeStar() 
 function checkMoves() {
     if (moveCounter === 15 || moveCounter === 22) {
         removeStar();
     }
 }
 
+// 'hide' a star from the DOM by adding the hidden class 
 function removeStar() {
     const stars = document.querySelectorAll(".stars li");
     for (star of stars) {
-        if (!star.firstElementChild.classList.contains("hidden")) {
-            star.firstElementChild.classList.add("hidden");
+        // if (!star.firstElementChild.classList.contains("hidden")) {
+        //     star.firstElementChild.classList.add("hidden");
+        //     break;
+        // }
+        if (star.style.display !== 'none') {
+            star.style.display = 'none';
             break;
         }
     }
