@@ -6,7 +6,9 @@ const cardList = [...document.querySelectorAll(".card")];
 let openCards = [];
 let matchedCards = [];
 let moveCounter = 0;
-let timerCount = 0;
+let time = 0;
+let timerInterval;
+let gameRunning = false;
 
 /*
  * Display the cards on the page
@@ -63,6 +65,10 @@ init();
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
         if (isClickValid(this)) {
+            if(!gameRunning) {
+                beginTimer();
+                gameRunning = true;
+            }
             toggleCard(this);
             addCardToOpenList(this);
             console.log("openCards.length =" + openCards.length);
@@ -81,6 +87,34 @@ cardList.forEach(function(card) {
         }
     });
 });
+
+// begin the timer 
+function beginTimer() {
+    time = 0;
+    timerInterval = setInterval(function() {
+        time++;
+        showTime();
+        console.log(time);
+    }, 1000);
+}
+
+// stop the timer
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// display the time on the page
+function showTime() {
+    const timer = document.querySelector(".timer");
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    if (seconds < 10) {
+        timer.innerHTML = `${minutes}:0${seconds}`;
+    } else {
+        timer.innerHTML = `${minutes}:${seconds}`;
+    }
+}
 
 // determine if a click on a card is valid or not 
 function isClickValid(card) {
