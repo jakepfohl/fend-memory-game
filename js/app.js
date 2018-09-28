@@ -5,7 +5,7 @@ const deck = document.querySelector(".deck");
 const cardList = [...document.querySelectorAll(".card")];
 let openCards = [];
 let matchedCards = [];
-let moveCounter = 0;
+let moves = 0;
 let time = 0;
 let timerInterval;
 let gameRunning = false;
@@ -16,13 +16,6 @@ let gameRunning = false;
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-function init() {
-    moveCounter = 0;
-    openCards.length = 0;
-    matchedCards.length = 0;
-    timerCount = 0;
-    shuffleCards();
-}
 
 // Shuffle the cards and display the new cards 
 function shuffleCards() {
@@ -60,7 +53,7 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-init();
+resetGame();
 
 cardList.forEach(function(card) {
     card.addEventListener("click", function() {
@@ -71,13 +64,10 @@ cardList.forEach(function(card) {
             }
             toggleCard(this);
             addCardToOpenList(this);
-            console.log("openCards.length =" + openCards.length);
-            console.log(openCards);
             if (openCards.length === 2) {
-                incrementAndShowMoveCounter();
+                incrementAndShowMoves();
                 checkMoves();
                 if (cardsMatch()) {
-                    console.log("It's a match!");
                     keepCardsOpen();
                 }
                 else {
@@ -88,13 +78,36 @@ cardList.forEach(function(card) {
     });
 });
 
+document.querySelector(".close-button").addEventListener("click", toggleFinalScore);
+
+document.querySelector(".modal-cancel").addEventListener("click", toggleFinalScore);
+
+document.querySelector(".modal-replay").addEventListener("click", replayGame);
+
+document.querySelector(".restart").addEventListener("click", resetGame);
+
+// reset the game
+function resetGame() {
+    resetTimer();
+    resetMoves();
+    resetStars();
+    resetArrays();
+    resetCards();
+    shuffleCards();
+}
+
+// replay game 
+function replayGame() {
+    resetGame();
+    toggleFinalScore();
+}
+
 // begin the timer 
 function beginTimer() {
     time = 0;
     timerInterval = setInterval(function() {
         time++;
         showTime();
-        console.log(time);
     }, 1000);
 }
 
@@ -103,17 +116,21 @@ function stopTimer() {
     clearInterval(timerInterval);
 }
 
+// reset the timer
+function resetTimer() {
+    stopTimer();
+    gameRunning = false;
+    time = 0;
+    showTime();
+}
+
 // display the time on the page
 function showTime() {
     const timer = document.querySelector(".timer");
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
-    if (seconds < 10) {
-        timer.innerHTML = `${minutes}:0${seconds}`;
-    } else {
-        timer.innerHTML = `${minutes}:${seconds}`;
-    }
+    seconds < 10 ? timer.innerHTML = `${minutes}:0${seconds}` : timer.innerHTML = `${minutes}:${seconds}`;
 }
 
 // determine if a click on a card is valid or not 
@@ -149,7 +166,7 @@ function keepCardsOpen() {
     });
     openCards.length = 0;
     if (matchedCards.length === 16) {
-        showFinalScore();
+        gameOver();
     }
 }
 
@@ -166,27 +183,55 @@ function closeCardsAndHideSymbol() {
     }, 1000);
 }
 
+// reset the cards and turn them all back over
+function resetCards() {
+    const cards = document.querySelectorAll('.deck li');
+    for (card of cards) {
+        card.className = 'card';
+    }
+}
+
+// reset openCards and matchedCards arrays to 0 
+function resetArrays() {
+    openCards.length = 0;
+    matchedCards.length = 0;
+}
+
 // increment the move counter and display it on the page
-function incrementAndShowMoveCounter() {
-    moveCounter++;
-    document.querySelector(".moves").textContent = moveCounter;
+function incrementAndShowMoves() {
+    moves++;
+    document.querySelector(".moves").textContent = moves;
 }
 
 // check if the user is on move 15 or 22. If so, call removeStar() 
 function checkMoves() {
-    if (moveCounter === 15 || moveCounter === 22) {
+    if (moves === 15 || moves === 22) {
         removeStar();
     }
+}
+
+// reset moves to 0 and display them 
+function resetMoves() {
+    moves = 0;
+    document.querySelector(".moves").textContent = moves;
+}
+
+// figure out the number of stars for the end of the game
+function getStars() {
+    const stars = document.querySelectorAll(".stars li");
+    let starCount = 0;
+    for (star of stars) {
+        if (star.style.display !== 'none') {
+            starCount++;
+        }
+    }
+    return starCount;
 }
 
 // 'hide' a star from the DOM by adding the hidden class 
 function removeStar() {
     const stars = document.querySelectorAll(".stars li");
     for (star of stars) {
-        // if (!star.firstElementChild.classList.contains("hidden")) {
-        //     star.firstElementChild.classList.add("hidden");
-        //     break;
-        // }
         if (star.style.display !== 'none') {
             star.style.display = 'none';
             break;
@@ -194,8 +239,38 @@ function removeStar() {
     }
 }
 
-// if all cards have matched, display a message with the final score
-function showFinalScore() {
-    console.log("Game over!");
+// reset stars back to 3 and display them 
+function resetStars() {
+    const stars = document.querySelectorAll(".stars li");
+    for (star of stars) {
+        star.style.display = 'inline';
+    }
+}
+
+function gameOver() {
+    stopTimer();
+    displayStats();
+    toggleFinalScore();
+}
+
+// if all cards have matched, display a modal with the final score
+function toggleFinalScore() {
+    const modal = document.querySelector(".modal");
+    modal.classList.toggle("show-modal");
+}
+
+// get stat numbers at the end of the game and put them in modal
+function displayStats() {
+    const timerVal = document.querySelector(".timer").innerHTML;
+    const starVal = getStars();
+
+    const finalTime = document.querySelector(".final-time");
+    const finalStars = document.querySelector(".final-stars");
+    const finalMoves = document.querySelector(".final-moves");
+
+
+    finalTime.innerHTML = `Time: ${timerVal}`;
+    finalMoves.innerHTML = `Moves: ${moves}`;
+    finalStars.innerHTML = `Stars: ${starVal}`;
 }
 
